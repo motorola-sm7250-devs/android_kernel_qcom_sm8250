@@ -708,6 +708,14 @@ struct fuse_in_header {
 	uint32_t	padding;
 };
 
+/* fuse_passthrough_out for passthrough V1 */
+struct fuse_passthrough_out {
+	uint32_t	fd;
+	/* For future implementation */
+	uint32_t	len;
+	void		*vec;
+};
+
 struct fuse_out_header {
 	uint32_t	len;
 	int32_t		error;
