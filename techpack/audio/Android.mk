@@ -28,13 +28,9 @@ include $(MY_LOCAL_PATH)/soc/Android.mk
 include $(MY_LOCAL_PATH)/asoc/Android.mk
 include $(MY_LOCAL_PATH)/asoc/codecs/Android.mk
 
-ifneq (,$(filter nio%, $(TARGET_PRODUCT)))
-include $(MY_LOCAL_PATH)/asoc/codecs/aw882xx/Android.mk
-endif
-
-ifneq (,$(filter pstar%, $(TARGET_PRODUCT)))
-include $(MY_LOCAL_PATH)/asoc/codecs/aw882xx/Android.mk
-endif
+ ifneq (,$(filter nairo% kiev% kyoto%, $(TARGET_PRODUCT)))
+ include $(MY_LOCAL_PATH)/asoc/codecs/aw882xx/Android.mk
+ endif
 
 endif
 

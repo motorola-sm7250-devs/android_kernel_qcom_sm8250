@@ -353,6 +353,18 @@ extern int crus_afe_set_callback(
 EXPORT_SYMBOL(crus_afe_set_callback);
 #endif
 
+#ifdef CONFIG_CIRRUS_PLAYBACK
+int32_t (*crus_afe_callback)(void *payload, int size);
+
+extern int crus_afe_set_callback(
+	int32_t (*crus_afe_callback_func)(void *payload, int size))
+{
+	crus_afe_callback = crus_afe_callback_func;
+	return 0;
+}
+EXPORT_SYMBOL(crus_afe_set_callback);
+#endif
+
 #define TIMEOUT_MS 1000
 #define Q6AFE_MAX_VOLUME 0x3FFF
 
@@ -2497,6 +2509,15 @@ static int afe_spk_prot_prepare(int src_port, int dst_port, int param_id,
 	case AFE_PARAM_ID_SP_V2_EX_VI_FTM_CFG:
 		param_info.module_id = AFE_MODULE_SPEAKER_PROTECTION_V2_EX_VI;
 		break;
+#ifdef CONFIG_SND_SOC_AWINIC_AW882XX
+	case AFE_PARAM_ID_AWDSP_RX_SET_ENABLE:
+	case AFE_PARAM_ID_AWDSP_RX_PARAMS:
+		param_info.module_id = AFE_MODULE_ID_AWDSP_RX;
+		break;
+	case AFE_PARAM_ID_AWDSP_TX_SET_ENABLE:
+		param_info.module_id = AFE_MODULE_ID_AWDSP_TX;
+		break;
+#endif	/*CONFIG_SND_SOC_AWINIC_AW882XX*/
 	case AFE_PARAM_ID_SP_V4_VI_CHANNEL_MAP_CFG:
 	case AFE_PARAM_ID_SP_V4_VI_OP_MODE_CFG:
 	case AFE_PARAM_ID_SP_V4_VI_R0T0_CFG:
@@ -3833,7 +3854,7 @@ int aw_send_afe_tx_module_enable(uint32_t tx_port_id, void *buf, int cmd_size)
 EXPORT_SYMBOL(aw_send_afe_tx_module_enable);
 
 int aw_send_afe_cal_apr(uint32_t rx_port_id, uint32_t tx_port_id,
-						uint32_t param_id, void *buf, int cmd_size, bool write)
+					uint32_t param_id, void *buf, int cmd_size, bool write)
 {
 	int32_t result = 0;
 	uint32_t port_id = rx_port_id;
